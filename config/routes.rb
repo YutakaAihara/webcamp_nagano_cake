@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   
   namespace :admin do
     get '/' => 'orders#index'
-    resources :products
+    resources :products, exept: :destroy
     resources :genres, only: [:index, :create, :edit, :update]
     resources :customers, only: [:index, :show, :edit, :update]
     resources :orders, only: [:show, :update]
@@ -26,8 +26,14 @@ Rails.application.routes.draw do
     resources :shipping_adresses, only: [:index, :create, :destroy, :edit, :update]
 
   end
-  devise_for :admins
+  devise_for :admins, controllers: {
+    sessions: 'admins/sessions'
+  }
 
-  devise_for :customers
+  devise_for :customers, controllers: {
+    sessions: 'customers/sessions',
+    passwords: 'customers/passwords',
+    registrations: 'custoers/registrations'
+  }
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
